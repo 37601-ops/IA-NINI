@@ -123,7 +123,7 @@ function appendMessage(role, text, products = []) {
 
   const avatar = document.createElement('div');
   avatar.className = 'msg-avatar';
-  avatar.textContent = role === 'bot' ? '🤖' : '👤';
+  avatar.textContent = role === 'bot' ? 'N' : '👤';
 
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
@@ -222,9 +222,8 @@ async function loadHistory() {
     } else {
       // Mensagem de boas-vindas
       appendMessage('bot',
-        '👋 Olá! Sou a **Nini**, sua assistente virtual de compras!\n\n' +
-        'Posso ajudar você a encontrar produtos do nosso catálogo, comparar opções ' +
-        'e montar um orçamento completo.\n\nComo posso te ajudar hoje?'
+        'Olá! Sou a **Nini**, assistente virtual da **NINI Store**.\n\n' +
+        'Estou aqui para te ajudar a escolher o produto ideal, esclarecer dúvidas e montar seu orçamento personalizado.\n\nComo posso te ajudar hoje?'
       );
     }
   } catch {

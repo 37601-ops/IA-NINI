@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NINI Store — Tecnologia e Mais</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+  <link rel="stylesheet" href="css/chat.css">
+  <style>
+    /* Estilos inline adicionais para a landing page */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .skeleton-card { height: 280px; }
+    .categorias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .categoria-card {
+      background: white;
+      border-radius: var(--raio);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--sombra-leve);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+    .categoria-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--sombra);
+      border-color: var(--cor-primaria);
+    }
+    .categoria-icon { font-size: 2rem; margin-bottom: 8px; }
+    .categoria-nome { font-size: 0.85rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+<header class="header">
+  <a href="#" class="header-logo">
+    <span class="header-logo-icon">🛍️</span>
+    NINI Store
+  </a>
+  <nav class="header-nav">
+    <button onclick="document.getElementById('produtos-destaque').scrollIntoView({behavior:'smooth'})">
+      Produtos
+    </button>
+    <button onclick="toggleChat()">💬 Chat com Nini</button>
+  </nav>
+</header>
+
+<!-- ── HERO ───────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Encontre o produto ideal com ajuda da IA! 🤖</h1>
+  <p>Nossa assistente virtual Nini pesquisa no catálogo real e recomenda o melhor para você.</p>
+  <button class="hero-btn" onclick="toggleChat()">
+    💬 Conversar com a Nini
+  </button>
+</section>
+
+<!-- ── CATEGORIAS ─────────────────────────────────────────────────────── -->
+<section class="section">
+  <h2 class="section-title">Categorias</h2>
+  <div class="categorias-grid" id="categorias-grid">
+    <div class="skeleton skeleton-card" style="height:100px"></div>
+    <div class="skeleton skeleton-card" style="height:100px"></div>
+    <div class="skeleton skeleton-card" style="height:100px"></div>
+    <div class="skeleton skeleton-card" style="height:100px"></div>
+  </div>
+</section>
+
+<!-- ── PRODUTOS EM DESTAQUE ────────────────────────────────────────────── -->
+<section class="section" id="produtos-destaque">
+  <h2 class="section-title">Produtos em Destaque</h2>
+  <div class="products-grid" id="products-grid">
+    <!-- Skeletons de carregamento -->
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <p>🛍️ NINI Store — Atendimento inteligente com IA</p>
+  <p style="margin-top:6px;font-size:0.75rem">
+    Para dúvidas, converse com a <strong>Nini</strong>, nossa assistente virtual! 💬
+  </p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     BOTÃO FLUTUANTE DO CHAT
+═══════════════════════════════════════════════════════════════════════ -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Conversar com a Nini">
+  💬
+  <span class="chat-fab-badge" id="fab-badge">1</span>
+</button>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     JANELA DO CHAT
+═══════════════════════════════════════════════════════════════════════ -->
+<div class="chat-window" id="chat-window" role="dialog" aria-label="Chat com Nini">
+
+  <!-- Header do chat -->
+  <div class="chat-header">
+    <div class="chat-header-avatar">🤖</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Nini — Assistente Virtual</div>
+      <div class="chat-header-status">
+        <span class="status-dot"></span> Online agora
+      </div>
+    </div>
+    <div class="chat-header-actions">
+      <button class="chat-btn-icon" onclick="novaConversa()" title="Nova conversa">🔄</button>
+      <button class="chat-btn-icon" onclick="fecharChat()" title="Fechar">✕</button>
+    </div>
+  </div>
+
+  <!-- Tabs: Chat / Orçamento -->
+  <div class="chat-tabs">
+    <button class="chat-tab ativo" id="tab-chat" onclick="switchTab('chat')">
+      💬 Chat
+    </button>
+    <button class="chat-tab" id="tab-orcamento" onclick="switchTab('orcamento')">
+      🧮 Orçamento
+      <span class="budget-count-badge" id="budget-count-badge">0</span>
+    </button>
+  </div>
+
+  <!-- ── Painel de Chat ─────────────────────────────────────────────── -->
+  <div id="chat-panel" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+
+    <!-- Área de mensagens -->
+    <div class="chat-messages" id="chat-messages">
+      <!-- Indicador de digitação (sempre último filho antes do input) -->
+      <div class="msg-wrapper bot">
+        <div class="msg-avatar">🤖</div>
+        <div class="typing-indicator" id="typing-indicator">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input de mensagem -->
+    <div class="chat-input-area">
+      <textarea
+        class="chat-input"
+        id="chat-input"
+        placeholder="Digite sua mensagem..."
+        rows="1"
+        maxlength="2000"
+        aria-label="Mensagem para a Nini"
+      ></textarea>
+      <button class="chat-send-btn" id="send-btn" title="Enviar">
+        ➤
+      </button>
+    </div>
+
+  </div><!-- /chat-panel -->
+
+  <!-- ── Painel de Orçamento ──────────────────────────────────────── -->
+  <div class="budget-panel" id="budget-panel">
+
+    <!-- Lista de itens -->
+    <div class="budget-items-list" id="budget-items-list" style="display:none"></div>
+
+    <!-- Estado vazio -->
+    <div class="budget-empty" id="budget-empty">
+      <div class="budget-empty-icon">🛒</div>
+      <p>Seu orçamento está vazio.</p>
+      <p style="font-size:0.8rem">
+        Converse com a Nini e adicione produtos clicando em
+        <strong>"+ Orçamento"</strong> nos cards!
+      </p>
+      <button class="hero-btn" style="font-size:0.85rem; padding:10px 20px;"
+              onclick="switchTab('chat')">
+        💬 Ir para o chat
+      </button>
+    </div>
+
+    <!-- Rodapé com totais -->
+    <div id="budget-footer" style="display:none"></div>
+
+  </div><!-- /budget-panel -->
+
+</div><!-- /chat-window -->
+
+<!-- Toast de notificação -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════════════════════ -->
+<script src="js/chat.js"></script>
+<script src="js/budget.js"></script>
+<script>
+// ── Carrega produtos e categorias na página ────────────────────────────────
+const API = 'http://127.0.0.1:8000/api';
+
+const CATEGORIAS_CONFIG = {
+  'Informática':            { icon: '💻', cor: '#e3f2fd' },
+  'Smartphones':            { icon: '📱', cor: '#fce4ec' },
+  'Móveis para Escritório': { icon: '🪑', cor: '#e8f5e9' },
+  'Acessórios':             { icon: '🔌', cor: '#fff8e1' },
+};
+
+async function carregarCategorias() {
+  const grid = document.getElementById('categorias-grid');
+  try {
+    const res = await fetch(`${API}/products/categories`);
+    const cats = await res.json();
+    grid.innerHTML = cats.map(cat => {
+      const conf = CATEGORIAS_CONFIG[cat] || { icon: '📦', cor: '#f5f5f5' };
+      return `
+        <div class="categoria-card" style="background:${conf.cor}"
+             onclick="filtrarPorCategoria('${cat}')">
+          <div class="categoria-icon">${conf.icon}</div>
+          <div class="categoria-nome">${cat}</div>
+        </div>
+      `;
+    }).join('');
+  } catch {
+    grid.innerHTML = '<p style="color:var(--cor-texto-claro)">Categorias indisponíveis.</p>';
+  }
+}
+
+async function carregarProdutos(params = {}) {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = Array(4).fill('<div class="skeleton skeleton-card"></div>').join('');
+
+  const query = new URLSearchParams({ limit: 8, ...params }).toString();
+  try {
+    const res = await fetch(`${API}/products/search?${query}`);
+    const products = await res.json();
+
+    if (!products.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;color:var(--cor-texto-claro)">Nenhum produto encontrado.</p>';
+      return;
+    }
+
+    grid.innerHTML = products.map(p => `
+      <div class="product-card-page">
+        <img src="${p.image_url || 'https://placehold.co/300x200?text=Produto'}"
+             alt="${p.name}"
+             onerror="this.src='https://placehold.co/300x200?text=Sem+Imagem'"
+             loading="lazy">
+        <div class="product-card-page-body">
+          <div class="product-card-page-name">${p.name}</div>
+          <div class="product-card-page-brand">${p.brand}</div>
+          <div class="product-card-page-price">
+            ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(p.price)}
+          </div>
+          <button class="product-card-page-btn"
+                  onclick="window.open('${p.product_url || '#'}', '_blank')">
+            Ver produto
+          </button>
+        </div>
+      </div>
+    `).join('');
+  } catch {
+    grid.innerHTML = '<p style="grid-column:1/-1;color:var(--cor-erro)">Não foi possível carregar os produtos. Verifique se o backend está rodando.</p>';
+  }
+}
+
+function filtrarPorCategoria(categoria) {
+  document.getElementById('produtos-destaque').scrollIntoView({ behavior: 'smooth' });
+  carregarProdutos({ category: categoria });
+}
+
+// Inicia carregamento
+carregarCategorias();
+carregarProdutos();
+</script>
+</body>
+</html>

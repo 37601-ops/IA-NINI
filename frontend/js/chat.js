@@ -1,9 +1,16 @@
+/*
+==============================================================================
+FRONTEND DESATIVADO (MANTIDO EM COMENTÁRIO)
+==============================================================================
+
 /**
  * chat.js — Lógica do chat com a IA Nini
  * Gerencia sessão, envia mensagens, renderiza respostas e cards de produto.
- */
+ * /
 
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') && window.location.port !== '8000' && window.location.port !== ''
+  ? 'http://127.0.0.1:8000/api'
+  : '/api';
 
 // ── Estado global ───────────────────────────────────────────────────────────
 let sessionId = null;
@@ -47,15 +54,19 @@ function init() {
 
 // ── Abrir / fechar chat ─────────────────────────────────────────────────────
 function toggleChat() {
-  chatWindow.classList.toggle('aberto');
-  if (chatWindow.classList.contains('aberto')) {
-    chatInput.focus();
-    scrollToBottom();
+  if (chatWindow) {
+    chatWindow.classList.toggle('aberto');
+    if (chatWindow.classList.contains('aberto')) {
+      chatInput.focus();
+      scrollToBottom();
+    }
   }
 }
 
 function fecharChat() {
-  chatWindow.classList.remove('aberto');
+  if (chatWindow) {
+    chatWindow.classList.remove('aberto');
+  }
 }
 
 // ── Tabs (Chat / Orçamento) ─────────────────────────────────────────────────
@@ -162,8 +173,8 @@ function formatMessage(text) {
   // Escapa HTML básico e formata markdown simples
   return text
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\*\*(.*?)\*\* /g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\* /g, '<em>$1</em>')
     .replace(/\n/g, '<br>');
 }
 
@@ -220,10 +231,10 @@ async function loadHistory() {
         appendMessage(msg.role === 'user' ? 'usuario' : 'bot', msg.content);
       });
     } else {
-      // Mensagem de boas-vindas
+      // Mensagem de boas-vindas especializada em materiais de construção
       appendMessage('bot',
-        'Olá! Sou a **Nini**, assistente virtual da **NINI Store**.\n\n' +
-        'Estou aqui para te ajudar a escolher o produto ideal, esclarecer dúvidas e montar seu orçamento personalizado.\n\nComo posso te ajudar hoje?'
+        'Olá! Sou a **Nini**, consultora técnica da **Nikkei Materiais de Construção** 🏗️.\n\n' +
+        'Estou aqui para te orientar na sua obra ou reforma: indicar os produtos certos (cimento, argamassa, tintas impermeabilizantes, tubos, pisos e ferramentas), ajudar a calcular quantidades e montar seu orçamento personalizado.\n\nQual fase da sua obra você está planejando agora?'
       );
     }
   } catch {
@@ -313,3 +324,6 @@ window.getSessionId  = () => sessionId;
 
 // ── Inicia ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', init);
+
+
+*/

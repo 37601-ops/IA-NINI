@@ -1,7 +1,12 @@
+/*
+==============================================================================
+FRONTEND DESATIVADO (MANTIDO EM COMENTÁRIO)
+==============================================================================
+
 /**
  * budget.js — Calculadora de orçamento integrada ao chat
  * Gerencia adição/remoção de itens e exibe totais validados pelo servidor.
- */
+ * /
 
 // ── Elementos do DOM ────────────────────────────────────────────────────────
 const budgetItemsList = document.getElementById('budget-items-list');
@@ -236,8 +241,11 @@ function updateBudgetBadge(count) {
 
 // ── Ir para produtos ─────────────────────────────────────────────────────────
 function irParaProdutos() {
-  document.getElementById('produtos-destaque')?.scrollIntoView({ behavior: 'smooth' });
-  window.fecharChat();
+  const container = document.getElementById('products-grid') || document.getElementById('produtos-destaque');
+  container?.scrollIntoView({ behavior: 'smooth' });
+  if (typeof window.fecharChat === 'function') {
+    window.fecharChat();
+  }
 }
 
 // ── Helper ───────────────────────────────────────────────────────────────────
@@ -255,3 +263,6 @@ window.clearBudget     = clearBudget;
 window.renderBudget    = renderBudget;
 window.clearBudgetUI   = clearBudgetUI;
 window.irParaProdutos  = irParaProdutos;
+
+
+*/

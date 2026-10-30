@@ -1,13 +1,18 @@
+﻿/*
+==============================================================================
+FRONTEND DESATIVADO (MANTIDO EM COMENTÁRIO)
+==============================================================================
+
 /* =========================================================
    chat.css — Identidade Visual Inspirada no Nikkei (tcc-sage-ten.vercel.app)
    Tipografia Barlow, Vermelho Nikkei (#d5232a), tons suaves e clean Apple-like
-   ========================================================= */
+   ========================================================= * /
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap');
 
-/* ── Variáveis Globais de Design do Nikkei ─────────────── */
+/* ── Variáveis Globais de Design do Nikkei ─────────────── * /
 :root {
-  /* Cores oficiais */
+  /* Cores oficiais * /
   --brand-red: #d5232a;
   --brand-red-dark: #a4181e;
   --brand-red-soft: #fbe6e6;
@@ -22,12 +27,12 @@
   --color-on-dark: #f5f5f7;
   --color-on-dark-soft: #b7b7bd;
 
-  /* Auxiliares */
+  /* Auxiliares * /
   --color-success: #1b873f;
   --color-success-bg: #e6f4ea;
   --color-danger: #d5232a;
 
-  /* Tipografia */
+  /* Tipografia * /
   --font-sans: 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --fs-xs: 0.8rem;
   --fs-sm: 0.9rem;
@@ -37,7 +42,7 @@
   --fs-xl: clamp(1.75rem, 3.2vw, 2.5rem);
   --fs-2xl: clamp(2.25rem, 4.5vw, 3.5rem);
 
-  /* Espaçamentos */
+  /* Espaçamentos * /
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -47,19 +52,19 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  /* Bordas e Raios */
+  /* Bordas e Raios * /
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-pill: 999px;
 
-  /* Sombras */
+  /* Sombras * /
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
   --shadow-red: 0 6px 18px rgba(213, 35, 42, 0.28);
 
-  /* Transições */
+  /* Transições * /
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 0.18s;
   --dur-base: 0.26s;
@@ -68,7 +73,7 @@
   --z-chat: 9999;
 }
 
-/* ── Reset básico ──────────────────────────────────────── */
+/* ── Reset básico ──────────────────────────────────────── * /
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -87,7 +92,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── HEADER MODERNO GLASSMORPHISM (NIKKEI STYLE) ────────── */
+/* ── HEADER MODERNO GLASSMORPHISM (NIKKEI STYLE) ────────── * /
 .site-header {
   position: fixed;
   top: 0;
@@ -166,7 +171,7 @@ body {
   gap: 12px;
 }
 
-/* Botões Pílula Estilo Nikkei */
+/* Botões Pílula Estilo Nikkei * /
 .btn {
   display: inline-flex;
   align-items: center;
@@ -219,7 +224,7 @@ body {
   padding: 8px 16px;
 }
 
-/* ── HERO SECTION NIKKEI ────────────────────────────────── */
+/* ── HERO SECTION NIKKEI ────────────────────────────────── * /
 .hero {
   padding: 130px 24px 70px;
   background: linear-gradient(180deg, var(--color-bg-alt) 0%, var(--color-bg) 100%);
@@ -276,7 +281,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* ── SEÇÕES E GRIDS ─────────────────────────────────────── */
+/* ── SEÇÕES E GRIDS ─────────────────────────────────────── * /
 .section {
   padding: 56px 24px;
   max-width: 1200px;
@@ -305,7 +310,7 @@ body {
   margin-top: 4px;
 }
 
-/* Categorias */
+/* Categorias * /
 .categorias-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -344,7 +349,7 @@ body {
   color: var(--color-ink);
 }
 
-/* Produtos Grid */
+/* Produtos Grid * /
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -445,7 +450,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* ── FOOTER ELEGANTE ESCURO (NIKKEI STYLE) ──────────────── */
+/* ── FOOTER ELEGANTE ESCURO (NIKKEI STYLE) ──────────────── * /
 .site-footer {
   background: var(--color-dark);
   color: var(--color-on-dark);
@@ -520,7 +525,7 @@ body {
   gap: 12px;
 }
 
-/* ── BOTÃO FLUTUANTE DO CHAT (NIKKEI RED) ───────────────── */
+/* ── BOTÃO FLUTUANTE DO CHAT (NIKKEI RED) ───────────────── * /
 .chat-fab {
   position: fixed;
   bottom: 24px;
@@ -568,7 +573,7 @@ body {
 }
 .chat-fab-badge.visible { display: flex; }
 
-/* ── JANELA DO CHAT (ESTILO NIKKEI CLEAN) ───────────────── */
+/* ── JANELA DO CHAT (ESTILO NIKKEI CLEAN) ───────────────── * /
 .chat-window {
   position: fixed;
   bottom: 96px;
@@ -595,7 +600,7 @@ body {
   pointer-events: all;
 }
 
-/* Header do Chat */
+/* Header do Chat * /
 .chat-header {
   background: var(--color-ink);
   color: #ffffff;
@@ -670,7 +675,7 @@ body {
   background: rgba(255, 255, 255, 0.22);
 }
 
-/* Tabs do Chat */
+/* Tabs do Chat * /
 .chat-tabs {
   display: flex;
   background: var(--color-bg-alt);
@@ -713,7 +718,7 @@ body {
 }
 .budget-count-badge.visible { display: inline-block; }
 
-/* Mensagens */
+/* Mensagens * /
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -790,7 +795,7 @@ body {
   text-align: right;
 }
 
-/* Indicador de Digitação */
+/* Indicador de Digitação * /
 .typing-indicator {
   display: none;
   padding: 10px 14px;
@@ -817,7 +822,7 @@ body {
   40%            { transform: scale(1.3); opacity: 1; }
 }
 
-/* Carrossel de Cards no Chat */
+/* Carrossel de Cards no Chat * /
 .products-carousel {
   display: flex;
   gap: 12px;
@@ -930,7 +935,7 @@ body {
   box-shadow: none;
 }
 
-/* Input do Chat */
+/* Input do Chat * /
 .chat-input-area {
   padding: 12px 14px;
   background: #ffffff;
@@ -992,7 +997,7 @@ body {
   transform: none;
 }
 
-/* ── PAINEL DE ORÇAMENTO (NIKKEI STYLE) ─────────────────── */
+/* ── PAINEL DE ORÇAMENTO (NIKKEI STYLE) ─────────────────── * /
 .budget-panel {
   flex: 1;
   display: none;
@@ -1102,7 +1107,7 @@ body {
 }
 .budget-remove-btn:hover { color: var(--brand-red); }
 
-/* Rodapé do Orçamento */
+/* Rodapé do Orçamento * /
 .budget-footer {
   border-top: 1px solid var(--color-border-soft);
   padding: 16px;
@@ -1189,7 +1194,7 @@ body {
 }
 .btn-ir-produtos:hover { background: var(--brand-red-dark); }
 
-/* Vazio */
+/* Vazio * /
 .budget-empty {
   flex: 1;
   display: flex;
@@ -1204,7 +1209,7 @@ body {
 .budget-empty-icon { font-size: 3rem; }
 .budget-empty p { font-size: var(--fs-sm); }
 
-/* Toast */
+/* Toast * /
 .toast {
   position: fixed;
   bottom: 100px;
@@ -1228,7 +1233,7 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Skeletons */
+/* Skeletons * /
 .skeleton {
   background: linear-gradient(90deg, #f0f0f2 25%, #e6e6e8 50%, #f0f0f2 75%);
   background-size: 200% 100%;
@@ -1238,7 +1243,7 @@ body {
 @keyframes shimmer { to { background-position: -200% 0; } }
 .skeleton-card { height: 320px; }
 
-/* ── RESPONSIVIDADE ─────────────────────────────────────── */
+/* ── RESPONSIVIDADE ─────────────────────────────────────── * /
 @media (max-width: 860px) {
   .site-footer__inner {
     grid-template-columns: 1fr;
@@ -1261,3 +1266,6 @@ body {
     right: 18px;
   }
 }
+
+
+*/

@@ -1,312 +1,648 @@
+<!--
+==============================================================================
+VERSÃO ANTERIOR DO FRONTEND (PRESERVADA COMO COMENTÁRIO A PEDIDO DO USUÁRIO)
+==============================================================================
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Versao Anterior</title>
+</head>
+<body>
+  <!-- Header antigo, Hero antigo, Popups flutuantes antigos preservados aqui -->
+</body>
+</html>
+==============================================================================
+FIM DO CÓDIGO COMENTADO
+==============================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NINI Store — Catálogo Inteligente com IA</title>
+  <title>Nikkei • Materiais de Construção — Portal & Atendimento IA</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23d5232a'/><text x='50%' y='55%' text-anchor='middle' fill='white' font-size='42' font-family='sans-serif' dy='.3em'>N</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/chat.css">
+
+  <style>
+    /* ── LAYOUT SINGLE-PAGE INTEGRADO (NIKKEI UNIFIED) ── */
+    body {
+      background: var(--color-bg-alt);
+      overflow-x: hidden;
+    }
+
+    /* Header Slim */
+    .app-header {
+      height: 64px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--color-border-soft);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      justify-content: space-between;
+    }
+
+    .app-header__brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--color-ink);
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .app-header__status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--color-ink-muted);
+      background: var(--color-bg-alt);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border-soft);
+    }
+
+    /* Container Principal Dividido (Split Layout) */
+    .app-main {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 24px;
+      min-height: calc(100vh - 64px);
+      align-items: start;
+    }
+
+    /* ── COLUNA DA ESQUERDA: CATÁLOGO DE MATERIAIS ── */
+    .catalog-panel {
+      background: #ffffff;
+      border: 1px solid var(--color-border-soft);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .catalog-top {
+      margin-bottom: 20px;
+    }
+
+    .catalog-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-ink);
+      margin-bottom: 4px;
+    }
+
+    .catalog-subtitle {
+      font-size: var(--fs-xs);
+      color: var(--color-ink-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Barra de Busca e Filtros Rápidos */
+    .search-bar-wrap {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      flex: 1;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      padding: 10px 18px;
+      font-family: var(--font-sans);
+      font-size: var(--fs-sm);
+      outline: none;
+      transition: all var(--dur-fast) ease;
+    }
+    .search-input:focus {
+      border-color: var(--brand-red);
+      box-shadow: 0 0 0 3px var(--brand-red-soft);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .filter-pills::-webkit-scrollbar { height: 4px; }
+    .filter-pill {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border-soft);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--color-ink-soft);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--dur-fast) ease;
+    }
+    .filter-pill:hover, .filter-pill.ativo {
+      background: var(--brand-red);
+      color: #ffffff;
+      border-color: var(--brand-red);
+    }
+
+    /* Grid do Catálogo */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .material-card {
+      background: #ffffff;
+      border: 1px solid var(--color-border-soft);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--dur-fast) ease;
+    }
+    .material-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-border);
+    }
+    .material-card__img-wrap {
+      position: relative;
+      width: 100%;
+      height: 130px;
+      background: var(--color-bg-alt);
+    }
+    .material-card__img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .material-card__badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--brand-red);
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border-soft);
+    }
+    .material-card__content {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .material-card__brand {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+    }
+    .material-card__name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      margin: 3px 0 8px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .material-card__bottom {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--color-border-soft);
+    }
+    .material-card__price {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--brand-red);
+    }
+
+    /* ── COLUNA DA DIREITA: PAINEL INTEGRADO FIXO (IA & ORÇAMENTO) ── */
+    .assistant-panel {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 84px;
+      height: calc(100vh - 104px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Header da Assistente */
+    .assistant-header {
+      background: var(--color-ink);
+      color: #ffffff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .assistant-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--brand-red);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-red);
+    }
+
+    .assistant-info { flex: 1; }
+    .assistant-name { font-size: 0.9rem; font-weight: 700; }
+    .assistant-tagline {
+      font-size: 0.72rem;
+      color: var(--color-on-dark-soft);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Abas Integradas */
+    .assistant-tabs {
+      display: flex;
+      background: var(--color-bg-alt);
+      border-bottom: 1px solid var(--color-border-soft);
+      padding: 4px;
+      flex-shrink: 0;
+    }
+
+    .assistant-tab {
+      flex: 1;
+      padding: 8px 12px;
+      background: none;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-ink-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all var(--dur-fast) ease;
+    }
+    .assistant-tab.ativo {
+      background: #ffffff;
+      color: var(--brand-red);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Visualização Unificada das Abas */
+    .tab-view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+    .tab-view.ativo { display: flex; }
+
+    /* Área de Mensagens */
+    .assistant-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #ffffff;
+    }
+
+    /* Prompt Chips */
+    .chips-shelf {
+      padding: 8px 12px;
+      background: var(--color-bg-alt);
+      border-top: 1px solid var(--color-border-soft);
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+    .chips-shelf::-webkit-scrollbar { height: 3px; }
+    .chip-btn {
+      white-space: nowrap;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-ink-soft);
+      cursor: pointer;
+      transition: all var(--dur-fast) ease;
+    }
+    .chip-btn:hover {
+      border-color: var(--brand-red);
+      color: var(--brand-red);
+      background: var(--brand-red-soft);
+    }
+
+    /* Campo de Mensagem */
+    .assistant-input-wrap {
+      padding: 10px 14px;
+      background: #ffffff;
+      border-top: 1px solid var(--color-border-soft);
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    .assistant-input {
+      flex: 1;
+      border: 1.5px solid var(--color-border-soft);
+      border-radius: var(--radius-pill);
+      padding: 9px 16px;
+      font-size: var(--fs-xs);
+      font-family: var(--font-sans);
+      background: var(--color-bg-alt);
+      color: var(--color-ink);
+      resize: none;
+      max-height: 80px;
+      min-height: 38px;
+      outline: none;
+      line-height: 1.35;
+    }
+    .assistant-input:focus {
+      background: #ffffff;
+      border-color: var(--brand-red);
+      box-shadow: 0 0 0 3px var(--brand-red-soft);
+    }
+
+    /* Responsividade */
+    @media (max-width: 1060px) {
+      .app-main {
+        grid-template-columns: 1fr;
+      }
+      .assistant-panel {
+        position: relative;
+        top: 0;
+        height: 600px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ── HEADER NIKKEI GLASSMORPHISM ────────────────────────────────────── -->
-<header class="site-header">
-  <div class="site-header__inner">
-    <a href="#" class="site-header__brand">
-      <span class="site-header__badge-red">N</span>
-      <span>NINI <span style="color:var(--brand-red)">STORE</span></span>
-    </a>
+<!-- ── BARRA SUPERIOR SLIM NIKKEI ────────────────────────────────────── -->
+<header class="app-header">
+  <a href="#" class="app-header__brand">
+    <span class="site-header__badge-red">N</span>
+    <span>NIKKEI <span style="color:var(--brand-red)">CONSTRUÇÃO</span></span>
+  </a>
 
-    <nav class="site-header__nav">
-      <button class="site-header__link" onclick="document.getElementById('categorias-section').scrollIntoView({behavior:'smooth'})">
-        Categorias
-      </button>
-      <button class="site-header__link" onclick="document.getElementById('produtos-destaque').scrollIntoView({behavior:'smooth'})">
-        Produtos
-      </button>
-      <button class="site-header__link" onclick="toggleChat()">
-        Assistente IA
-      </button>
-    </nav>
+  <div class="app-header__status">
+    <span class="status-dot"></span>
+    <span>Consultora IA & Orçamento Integrados</span>
+  </div>
 
-    <div class="site-header__actions">
-      <button class="btn btn--primary btn--sm" onclick="toggleChat()">
-        💬 Falar com a Nini
-      </button>
-    </div>
+  <div>
+    <button class="btn btn--outline btn--sm" onclick="novaConversa()">
+      🔄 Reiniciar Atendimento
+    </button>
   </div>
 </header>
 
-<!-- ── HERO SECTION NIKKEI STYLE ──────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero__inner">
-    <div class="hero__tag">
-      ✨ Inteligência Artificial Integrada
-    </div>
-    <h1>
-      Encontre o produto ideal com <span class="highlight">atendimento inteligente</span>
-    </h1>
-    <p>
-      Nossa assistente virtual pesquisa em tempo real no catálogo oficial,
-      tira suas dúvidas técnicas e monta seu orçamento sob medida.
-    </p>
-    <div class="hero__actions">
-      <button class="btn btn--primary" onclick="toggleChat()">
-        💬 Iniciar Atendimento com a Nini
-      </button>
-      <button class="btn btn--outline" onclick="document.getElementById('produtos-destaque').scrollIntoView({behavior:'smooth'})">
-        Ver Catálogo Completo
-      </button>
-    </div>
-  </div>
-</section>
+<!-- ── WORKSPACE INTEGRADO (PÁGINA ÚNICA) ─────────────────────────────── -->
+<main class="app-main">
 
-<!-- ── CATEGORIAS EM DESTAQUE ─────────────────────────────────────────── -->
-<section class="section" id="categorias-section">
-  <div class="section-header">
-    <div>
-      <h2 class="section-title">Navegue por Categoria</h2>
-      <p class="section-subtitle">Selecione uma categoria para filtrar os produtos disponíveis</p>
-    </div>
-  </div>
-  <div class="categorias-grid" id="categorias-grid">
-    <div class="skeleton" style="height:120px"></div>
-    <div class="skeleton" style="height:120px"></div>
-    <div class="skeleton" style="height:120px"></div>
-    <div class="skeleton" style="height:120px"></div>
-  </div>
-</section>
+  <!-- ── 1. COLUNA ESQUERDA: CATÁLOGO DE MATERIAIS ── -->
+  <section class="catalog-panel">
+    <div class="catalog-top">
+      <h1 class="catalog-title">Materiais de Construção</h1>
+      <p class="catalog-subtitle">Selecione os materiais diretamente ou peça recomendações técnicas para a IA ao lado</p>
 
-<!-- ── PRODUTOS EM DESTAQUE ────────────────────────────────────────────── -->
-<section class="section" id="produtos-destaque">
-  <div class="section-header">
-    <div>
-      <h2 class="section-title">Catálogo em Destaque</h2>
-      <p class="section-subtitle">Produtos reais com preços e estoque sincronizados pelo MongoDB</p>
-    </div>
-    <button class="btn btn--outline btn--sm" onclick="carregarProdutos()">
-      🔄 Ver Todos
-    </button>
-  </div>
-
-  <div class="products-grid" id="products-grid">
-    <div class="skeleton skeleton-card"></div>
-    <div class="skeleton skeleton-card"></div>
-    <div class="skeleton skeleton-card"></div>
-    <div class="skeleton skeleton-card"></div>
-  </div>
-</section>
-
-<!-- ── FOOTER ESCURO ESTILO NIKKEI ────────────────────────────────────── -->
-<footer class="site-footer">
-  <div class="site-footer__inner">
-    <div>
-      <div class="site-footer__brand">
-        <span class="site-header__badge-red">N</span>
-        NINI STORE
+      <!-- Busca e Filtros -->
+      <div class="search-bar-wrap">
+        <input type="text"
+               class="search-input"
+               id="busca-material"
+               placeholder="Buscar cimento, argamassa, tinta, tubos, ferramentas..."
+               oninput="filtrarPorTexto(this.value)">
       </div>
-      <p class="site-footer__desc">
-        Plataforma de e-commerce e atendimento inteligente impulsionada por IA generativa,
-        banco de dados em tempo real e calculadora de orçamentos integrada.
-      </p>
-    </div>
 
-    <div>
-      <div class="site-footer__col-title">Navegação</div>
-      <ul class="site-footer__links">
-        <li><a href="#categorias-section">Categorias</a></li>
-        <li><a href="#produtos-destaque">Catálogo de Produtos</a></li>
-        <li><a href="javascript:void(0)" onclick="toggleChat()">Chat Virtual com a Nini</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <div class="site-footer__col-title">Tecnologias</div>
-      <ul class="site-footer__links">
-        <li><a href="http://localhost:8000/docs" target="_blank">FastAPI Backend (Swagger)</a></li>
-        <li><a href="javascript:void(0)">Groq LLaMA 3.1 & Qwen</a></li>
-        <li><a href="javascript:void(0)">MongoDB Atlas Database</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="site-footer__bottom">
-    <span>© 2026 NINI Store — Todos os direitos reservados.</span>
-    <span>Estilo inspirado em Nikkei • Design moderno & responsivo</span>
-  </div>
-</footer>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     BOTÃO FLUTUANTE DO CHAT (NIKKEI RED)
-═══════════════════════════════════════════════════════════════════════ -->
-<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Conversar com a Nini">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-  </svg>
-  <span class="chat-fab-badge" id="fab-badge">1</span>
-</button>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     JANELA DO CHAT (ESTILO NIKKEI)
-═══════════════════════════════════════════════════════════════════════ -->
-<div class="chat-window" id="chat-window" role="dialog" aria-label="Chat com a assistente Nini">
-
-  <!-- Header do chat -->
-  <div class="chat-header">
-    <div class="chat-header-avatar">N</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">Nini • Assistente de Vendas</div>
-      <div class="chat-header-status">
-        <span class="status-dot"></span> Online agora
+      <div class="filter-pills" id="filtro-categorias">
+        <button class="filter-pill ativo" onclick="filtrarPorCategoria('')">Todos os Materiais</button>
+        <button class="filter-pill" onclick="filtrarPorCategoria('Básico & Alvenaria')">🧱 Básico & Alvenaria</button>
+        <button class="filter-pill" onclick="filtrarPorCategoria('Pintura & Impermeabilização')">🎨 Pintura & Impermeabilização</button>
+        <button class="filter-pill" onclick="filtrarPorCategoria('Hidráulica & Elétrica')">💧 Hidráulica & Elétrica</button>
+        <button class="filter-pill" onclick="filtrarPorCategoria('Pisos & Acabamentos')">📐 Pisos & Acabamentos</button>
+        <button class="filter-pill" onclick="filtrarPorCategoria('Ferramentas')">🛠️ Ferramentas</button>
       </div>
     </div>
-    <div class="chat-header-actions">
-      <button class="chat-btn-icon" onclick="novaConversa()" title="Nova conversa">🔄</button>
-      <button class="chat-btn-icon" onclick="fecharChat()" title="Fechar">✕</button>
+
+    <!-- Grid de Materiais -->
+    <div class="catalog-grid" id="products-grid">
+      <div class="skeleton" style="height:240px"></div>
+      <div class="skeleton" style="height:240px"></div>
+      <div class="skeleton" style="height:240px"></div>
+      <div class="skeleton" style="height:240px"></div>
     </div>
-  </div>
+  </section>
 
-  <!-- Tabs: Chat / Orçamento -->
-  <div class="chat-tabs">
-    <button class="chat-tab ativo" id="tab-chat" onclick="switchTab('chat')">
-      💬 Atendimento
-    </button>
-    <button class="chat-tab" id="tab-orcamento" onclick="switchTab('orcamento')">
-      🧮 Orçamento
-      <span class="budget-count-badge" id="budget-count-badge">0</span>
-    </button>
-  </div>
+  <!-- ── 2. COLUNA DIREITA: CONSULTORA IA & ORÇAMENTO FIXOS ── -->
+  <aside class="assistant-panel">
 
-  <!-- ── Painel de Chat ─────────────────────────────────────────────── -->
-  <div id="chat-panel" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
-
-    <!-- Área de mensagens -->
-    <div class="chat-messages" id="chat-messages">
-      <!-- Indicador de digitação -->
-      <div class="msg-wrapper bot">
-        <div class="msg-avatar">N</div>
-        <div class="typing-indicator" id="typing-indicator">
-          <span class="typing-dot"></span>
-          <span class="typing-dot"></span>
-          <span class="typing-dot"></span>
+    <!-- Topo da Assistente -->
+    <div class="assistant-header">
+      <div class="assistant-avatar">N</div>
+      <div class="assistant-info">
+        <div class="assistant-name">Nini • Especialista Técnica</div>
+        <div class="assistant-tagline">
+          <span class="status-dot"></span> Pronta para calcular sua obra
         </div>
       </div>
     </div>
 
-    <!-- Input de mensagem -->
-    <div class="chat-input-area">
-      <textarea
-        class="chat-input"
-        id="chat-input"
-        placeholder="Digite sua dúvida ou produto que procura..."
-        rows="1"
-        maxlength="2000"
-        aria-label="Mensagem para a Nini"
-      ></textarea>
-      <button class="chat-send-btn" id="send-btn" title="Enviar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
+    <!-- Abas Atendimento / Orçamento -->
+    <div class="assistant-tabs">
+      <button class="assistant-tab ativo" id="tab-chat" onclick="switchSinglePageTab('chat')">
+        💬 Atendimento IA
+      </button>
+      <button class="assistant-tab" id="tab-orcamento" onclick="switchSinglePageTab('orcamento')">
+        🧮 Orçamento
+        <span class="budget-count-badge" id="budget-count-badge">0</span>
       </button>
     </div>
 
-  </div><!-- /chat-panel -->
+    <!-- ── ABA 1: CHAT COM A IA ── -->
+    <div class="tab-view ativo" id="chat-panel">
+      <!-- Mensagens -->
+      <div class="assistant-messages" id="chat-messages">
+        <!-- Indicador de digitação -->
+        <div class="msg-wrapper bot">
+          <div class="msg-avatar">N</div>
+          <div class="typing-indicator" id="typing-indicator">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+      </div>
 
-  <!-- ── Painel de Orçamento ──────────────────────────────────────── -->
-  <div class="budget-panel" id="budget-panel">
+      <!-- Atalhos de Perguntas de Obra -->
+      <div class="chips-shelf">
+        <button class="chip-btn" onclick="perguntarParaIA('Qual o melhor cimento para minha obra?')">
+          🧱 Melhor cimento?
+        </button>
+        <button class="chip-btn" onclick="perguntarParaIA('Qual tinta usar na área externa?')">
+          🎨 Tinta externa
+        </button>
+        <button class="chip-btn" onclick="perguntarParaIA('Qual a argamassa ideal para porcelanato?')">
+          📐 Argamassa AC3
+        </button>
+        <button class="chip-btn" onclick="perguntarParaIA('Como impermeabilizar o alicerce contra umidade?')">
+          💧 Impermeabilizar
+        </button>
+      </div>
 
-    <!-- Lista de itens -->
-    <div class="budget-items-list" id="budget-items-list" style="display:none"></div>
-
-    <!-- Estado vazio -->
-    <div class="budget-empty" id="budget-empty">
-      <div class="budget-empty-icon">🛒</div>
-      <p style="font-weight:700; color:var(--color-ink)">Seu orçamento está vazio.</p>
-      <p style="font-size:0.8rem; max-width:260px">
-        Converse com a Nini no chat e clique em
-        <strong style="color:var(--brand-red)">"+ Orçamento"</strong> nos produtos recomendados!
-      </p>
-      <button class="btn btn--primary btn--sm" style="margin-top:8px" onclick="switchTab('chat')">
-        💬 Ir para o Atendimento
-      </button>
+      <!-- Input de Mensagem -->
+      <div class="assistant-input-wrap">
+        <textarea
+          class="assistant-input"
+          id="chat-input"
+          placeholder="Pergunte sobre cimento, tintas, quantidades..."
+          rows="1"
+          maxlength="2000"
+        ></textarea>
+        <button class="chat-send-btn" id="send-btn" title="Enviar dúvida">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <!-- Rodapé com totais calculados no backend -->
-    <div id="budget-footer" style="display:none"></div>
+    <!-- ── ABA 2: CALCULADORA DE ORÇAMENTO ── -->
+    <div class="tab-view" id="budget-panel">
+      <!-- Lista de Itens -->
+      <div class="budget-items-list" id="budget-items-list" style="display:none"></div>
 
-  </div><!-- /budget-panel -->
+      <!-- Estado Vazio -->
+      <div class="budget-empty" id="budget-empty">
+        <div class="budget-empty-icon">🏗️</div>
+        <p style="font-weight:700; color:var(--color-ink)">Orçamento vazio.</p>
+        <p style="font-size:0.78rem; max-width:260px">
+          Adicione materiais clicando em <strong style="color:var(--brand-red)">"+ Orçamento"</strong> nos produtos ao lado ou peça para a Nini recomendar!
+        </p>
+        <button class="btn btn--primary btn--sm" style="margin-top:6px" onclick="switchSinglePageTab('chat')">
+          💬 Falar com a Nini
+        </button>
+      </div>
 
-</div><!-- /chat-window -->
+      <!-- Rodapé com Totais -->
+      <div id="budget-footer" style="display:none"></div>
+    </div>
 
-<!-- Toast de notificação -->
+  </aside>
+
+</main>
+
+<!-- Toast de Notificações -->
 <div class="toast" id="toast"></div>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     SCRIPTS
+     SCRIPTS DO FRONTEND INTEGRADO
 ═══════════════════════════════════════════════════════════════════════ -->
 <script src="js/chat.js"></script>
 <script src="js/budget.js"></script>
 <script>
-const API = 'http://127.0.0.1:8000/api';
+// Detecta URL dinâmica da API
+const API = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') && window.location.port !== '8000' && window.location.port !== ''
+  ? 'http://127.0.0.1:8000/api'
+  : '/api';
 
-const CATEGORIAS_CONFIG = {
-  'Informática':            { icon: '💻' },
-  'Smartphones':            { icon: '📱' },
-  'Móveis para Escritório': { icon: '🪑' },
-  'Acessórios':             { icon: '🔌' },
-};
+let categoriaAtual = '';
+let buscaTimeout = null;
 
-async function carregarCategorias() {
-  const grid = document.getElementById('categorias-grid');
-  try {
-    const res = await fetch(`${API}/products/categories`);
-    const cats = await res.json();
-    grid.innerHTML = cats.map(cat => {
-      const conf = CATEGORIAS_CONFIG[cat] || { icon: '📦' };
-      return `
-        <div class="categoria-card" onclick="filtrarPorCategoria('${cat}')">
-          <div class="categoria-icon">${conf.icon}</div>
-          <div class="categoria-nome">${cat}</div>
-        </div>
-      `;
-    }).join('');
-  } catch {
-    grid.innerHTML = '<p style="color:var(--color-ink-muted)">Categorias indisponíveis no momento.</p>';
+// Alterna entre abas na mesma página (Chat / Orçamento)
+function switchSinglePageTab(tab) {
+  const tabChat = document.getElementById('tab-chat');
+  const tabOrcamento = document.getElementById('tab-orcamento');
+  const chatPanel = document.getElementById('chat-panel');
+  const budgetPanel = document.getElementById('budget-panel');
+
+  if (tab === 'chat') {
+    tabChat.classList.add('ativo');
+    tabOrcamento.classList.remove('ativo');
+    chatPanel.classList.add('ativo');
+    budgetPanel.classList.remove('ativo');
+  } else {
+    tabOrcamento.classList.add('ativo');
+    tabChat.classList.remove('ativo');
+    budgetPanel.classList.add('ativo');
+    chatPanel.classList.remove('ativo');
+    window.renderBudget && window.renderBudget();
   }
 }
 
+// Substitui a switchTab do chat.js para usar a aba da página única
+window.switchTab = switchSinglePageTab;
+
+// Carrega os materiais no catálogo
 async function carregarProdutos(params = {}) {
   const grid = document.getElementById('products-grid');
-  grid.innerHTML = Array(4).fill('<div class="skeleton skeleton-card"></div>').join('');
+  grid.innerHTML = Array(4).fill('<div class="skeleton" style="height:240px"></div>').join('');
 
-  const query = new URLSearchParams({ limit: 8, ...params }).toString();
+  const query = new URLSearchParams({ limit: 30, ...params }).toString();
   try {
     const res = await fetch(`${API}/products/search?${query}`);
     const products = await res.json();
 
     if (!products.length) {
-      grid.innerHTML = '<p style="grid-column:1/-1;color:var(--color-ink-muted);text-align:center;padding:40px">Nenhum produto encontrado nesta busca.</p>';
+      grid.innerHTML = '<p style="grid-column:1/-1;color:var(--color-ink-muted);text-align:center;padding:40px">Nenhum material encontrado com esses critérios.</p>';
       return;
     }
 
     grid.innerHTML = products.map(p => `
-      <div class="product-card-page">
-        <div class="product-card-page__media">
-          <span class="product-card-page__badge">${p.category}</span>
-          <img src="${p.image_url || 'https://placehold.co/300x200?text=Produto'}"
+      <div class="material-card">
+        <div class="material-card__img-wrap">
+          <span class="material-card__badge">${p.category}</span>
+          <img src="${p.image_url || 'https://placehold.co/300x200?text=Material'}"
                alt="${p.name}"
                onerror="this.src='https://placehold.co/300x200?text=Sem+Imagem'"
                loading="lazy">
         </div>
-        <div class="product-card-page-body">
-          <div class="product-card-page-brand">${p.brand}</div>
-          <div class="product-card-page-name">${p.name}</div>
-          <div class="product-card-page__footer">
-            <div class="product-card-page-price">
+        <div class="material-card__content">
+          <div class="material-card__brand">${p.brand}</div>
+          <div class="material-card__name" title="${p.name}">${p.name}</div>
+          <div class="material-card__bottom">
+            <div class="material-card__price">
               ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(p.price)}
             </div>
             <button class="btn btn--primary btn--sm"
@@ -318,17 +654,47 @@ async function carregarProdutos(params = {}) {
       </div>
     `).join('');
   } catch {
-    grid.innerHTML = '<p style="grid-column:1/-1;color:var(--brand-red);text-align:center;padding:30px">Não foi possível carregar os produtos. Verifique se o backend está em execução.</p>';
+    grid.innerHTML = '<p style="grid-column:1/-1;color:var(--brand-red);text-align:center;padding:30px">Não foi possível carregar os materiais. Verifique se o servidor está ativo.</p>';
   }
 }
 
 function filtrarPorCategoria(categoria) {
-  document.getElementById('produtos-destaque').scrollIntoView({ behavior: 'smooth' });
-  carregarProdutos({ category: categoria });
+  categoriaAtual = categoria;
+
+  // Atualiza pílulas visuais
+  const pills = document.querySelectorAll('.filter-pill');
+  pills.forEach(p => {
+    if ((!categoria && p.textContent.includes('Todos')) || (categoria && p.textContent.includes(categoria))) {
+      p.classList.add('ativo');
+    } else {
+      p.classList.remove('ativo');
+    }
+  });
+
+  const params = {};
+  if (categoria) params.category = categoria;
+  carregarProdutos(params);
 }
 
-// Inicializa a página
-carregarCategorias();
+function filtrarPorTexto(termo) {
+  clearTimeout(buscaTimeout);
+  buscaTimeout = setTimeout(() => {
+    const params = {};
+    if (termo.trim()) params.q = termo.trim();
+    if (categoriaAtual) params.category = categoriaAtual;
+    carregarProdutos(params);
+  }, 300);
+}
+
+function perguntarParaIA(pergunta) {
+  switchSinglePageTab('chat');
+  const chatInput = document.getElementById('chat-input');
+  chatInput.value = pergunta;
+  const sendBtn = document.getElementById('send-btn');
+  sendBtn.click();
+}
+
+// Inicia com todos os materiais
 carregarProdutos();
 </script>
 </body>

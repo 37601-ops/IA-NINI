@@ -1,332 +1,342 @@
 """
-seed_data.py — Popula o MongoDB com produtos de exemplo realistas.
-Execute: python seed_data.py
+seed_data.py — Popula o MongoDB Atlas com materiais de construção reais da Nikkei.
+Categorias:
+- Básico & Alvenaria
+- Pintura & Impermeabilização
+- Hidráulica & Elétrica
+- Pisos & Acabamentos
+- Ferramentas & Equipamentos
 """
 import asyncio
 import sys
 import os
 from decimal import Decimal
 
-# Garante que o diretório atual seja o backend
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from config import settings
 from database import get_motor_client, init_db
 from models import Product
 
-PRODUTOS = [
-    # ─── Informática ─────────────────────────────────────────────────────
+MATERIAIS_CONSTRUCAO = [
+    # ─── Básico & Alvenaria ──────────────────────────────────────────────
     {
-        "name": "Notebook Dell Inspiron 15 3000",
+        "name": "Cimento Votoran Todas as Obras CP II-E-32 50kg",
         "description": (
-            "Notebook ideal para estudos e trabalho do dia a dia. "
-            "Processador Intel Core i5-1135G7, 8GB RAM DDR4, SSD 256GB, "
-            "tela 15.6\" Full HD, Windows 11 Home. Ótimo custo-benefício."
+            "Cimento Portland de uso geral indicado para reboco, contrapiso, calçadas, "
+            "argamassa de assentamento e concreto estrutural. Secagem uniforme e alta resistência."
         ),
-        "category": "Informática",
-        "brand": "Dell",
-        "price": Decimal("2499.00"),
-        "stock_quantity": 15,
-        "image_url": "https://placehold.co/300x200/1a73e8/white?text=Dell+Inspiron+15",
-        "product_url": "#produto-1",
+        "category": "Básico & Alvenaria",
+        "brand": "Votoran",
+        "price": Decimal("38.90"),
+        "stock_quantity": 250,
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Cimento+Votoran+50kg",
+        "product_url": "#produto-cimento-votoran",
     },
     {
-        "name": "Notebook Lenovo IdeaPad 3",
+        "name": "Cimento Cauê Estrutural Alta Resistência CP V-ARI 50kg",
         "description": (
-            "Excelente para estudantes e uso cotidiano. "
-            "AMD Ryzen 5 5500U, 8GB RAM, SSD 512GB, tela 15.6\" Full HD, "
-            "bateria de longa duração, Windows 11."
+            "Cimento de alta resistência inicial para lajes, pilares, vigas e pré-moldados. "
+            "Desforma rápida e máxima resistência para obras pesadas."
         ),
-        "category": "Informática",
-        "brand": "Lenovo",
-        "price": Decimal("2299.00"),
-        "stock_quantity": 22,
-        "image_url": "https://placehold.co/300x200/e84335/white?text=Lenovo+IdeaPad+3",
-        "product_url": "#produto-2",
+        "category": "Básico & Alvenaria",
+        "brand": "Cauê",
+        "price": Decimal("44.50"),
+        "stock_quantity": 120,
+        "image_url": "https://placehold.co/300x200/1d1d1f/white?text=Cimento+Caue+CPV",
+        "product_url": "#produto-cimento-caue",
     },
     {
-        "name": "Notebook Acer Aspire 5",
+        "name": "Argamassa AC-II Cinza Votoran 20kg",
         "description": (
-            "Performance e portabilidade para estudos e multimedia. "
-            "Intel Core i5-1235U, 8GB RAM, SSD 512GB, tela 15.6\" IPS Full HD, "
-            "design slim, leitor de impressão digital."
+            "Argamassa colante multiuso para áreas internas e externas. Indicada para "
+            "assentamento de pisos cerâmicos e revestimentos em paredes e lajes."
         ),
-        "category": "Informática",
-        "brand": "Acer",
-        "price": Decimal("2799.00"),
-        "stock_quantity": 10,
-        "image_url": "https://placehold.co/300x200/34a853/white?text=Acer+Aspire+5",
-        "product_url": "#produto-3",
+        "category": "Básico & Alvenaria",
+        "brand": "Votoran",
+        "price": Decimal("19.90"),
+        "stock_quantity": 180,
+        "image_url": "https://placehold.co/300x200/86868b/white?text=Argamassa+AC2+20kg",
+        "product_url": "#produto-argamassa-ac2",
     },
     {
-        "name": "Mouse Logitech MX Master 3",
+        "name": "Argamassa AC-III Branca Quartzolit Especial Porcelanato 20kg",
         "description": (
-            "Mouse sem fio premium para produtividade. "
-            "Sensor Darkfield 4000 DPI, scroll eletromagnético, "
-            "conexão USB-C, compatível com Windows e Mac, autonomia 70 dias."
+            "Alta aderência e flexibilidade para porcelanatos, pedras naturais, piscinas e "
+            "fachadas. Uso interno e externo de alta performance."
         ),
-        "category": "Informática",
-        "brand": "Logitech",
-        "price": Decimal("549.00"),
-        "stock_quantity": 30,
-        "image_url": "https://placehold.co/300x200/fbbc04/black?text=MX+Master+3",
-        "product_url": "#produto-4",
+        "category": "Básico & Alvenaria",
+        "brand": "Quartzolit",
+        "price": Decimal("36.90"),
+        "stock_quantity": 90,
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Quartzolit+AC3",
+        "product_url": "#produto-quartzolit-ac3",
     },
     {
-        "name": "Teclado Mecânico Redragon Kumara K552",
+        "name": "Tijolo Cerâmico Baiano 8 Furos 9x19x19cm",
         "description": (
-            "Teclado mecânico compacto TKL (87 teclas). "
-            "Switches Red lineares, retroiluminação RGB, estrutura metálica, "
-            "anti-ghosting, ideal para games e digitação."
+            "Tijolo furado cerâmico para alvenaria de vedação. Proporciona isolamento térmico e acústico, "
+            "ótimo alinhamento para assentamento de paredes. Rendimento: ~25 un/m²."
         ),
-        "category": "Informática",
-        "brand": "Redragon",
-        "price": Decimal("249.00"),
-        "stock_quantity": 45,
-        "image_url": "https://placehold.co/300x200/ea4335/white?text=Teclado+K552",
-        "product_url": "#produto-5",
+        "category": "Básico & Alvenaria",
+        "brand": "Cerâmica Regional",
+        "price": Decimal("1.85"),
+        "stock_quantity": 5000,
+        "image_url": "https://placehold.co/300x200/a4181e/white?text=Tijolo+Baiano+8F",
+        "product_url": "#produto-tijolo-baiano",
     },
     {
-        "name": "Headset Logitech H390",
+        "name": "Areia Média Lavada Ensacada 20kg",
         "description": (
-            "Headset com fio USB para home office e aulas online. "
-            "Microfone com cancelamento de ruído, controles de volume no cabo, "
-            "almofadas acolchoadas, plug-and-play."
+            "Areia limpa e lavada pronta para uso, livre de impurezas. Perfeita para preparo "
+            "de argamassa de emboço, reboco e concreto."
         ),
-        "category": "Informática",
-        "brand": "Logitech",
-        "price": Decimal("189.00"),
-        "stock_quantity": 60,
-        "image_url": "https://placehold.co/300x200/4285f4/white?text=H390+Headset",
-        "product_url": "#produto-6",
-    },
-    # ─── Smartphones ─────────────────────────────────────────────────────
-    {
-        "name": "Samsung Galaxy A54 5G",
-        "description": (
-            "Smartphone intermediário com câmera tripla de 50MP. "
-            "Processador Exynos 1380, 8GB RAM, 256GB armazenamento, "
-            "tela Super AMOLED 6.4\" 120Hz, bateria 5000mAh, Android 13."
-        ),
-        "category": "Smartphones",
-        "brand": "Samsung",
-        "price": Decimal("1799.00"),
-        "stock_quantity": 25,
-        "image_url": "https://placehold.co/300x200/1565c0/white?text=Galaxy+A54",
-        "product_url": "#produto-7",
+        "category": "Básico & Alvenaria",
+        "brand": "Nikkei Mineradora",
+        "price": Decimal("7.50"),
+        "stock_quantity": 300,
+        "image_url": "https://placehold.co/300x200/d2d2d7/black?text=Areia+Media+20kg",
+        "product_url": "#produto-areia-media",
     },
     {
-        "name": "Xiaomi Redmi Note 12",
+        "name": "Pedra Brita 1 Lavada Ensacada 20kg",
         "description": (
-            "Custo-benefício excepcional. Câmera tripla 50MP, "
-            "tela AMOLED 6.67\" 120Hz, bateria 5000mAh com carga 33W, "
-            "4GB RAM, 128GB, MIUI 14."
+            "Brita graduationada número 1 ideal para concreto de fundação, colunas, vigas e calçadas. "
+            "Saco prático e limpo para pequenas reformas e obras."
         ),
-        "category": "Smartphones",
-        "brand": "Xiaomi",
-        "price": Decimal("1199.00"),
+        "category": "Básico & Alvenaria",
+        "brand": "Nikkei Mineradora",
+        "price": Decimal("8.00"),
+        "stock_quantity": 250,
+        "image_url": "https://placehold.co/300x200/515154/white?text=Pedra+Brita+1",
+        "product_url": "#produto-brita-1",
+    },
+
+    # ─── Pintura & Impermeabilização ─────────────────────────────────────
+    {
+        "name": "Impermeabilizante Vedacit Balde 18 Litros",
+        "description": (
+            "Aditivo impermeabilizante para concreto e argamassa de assentamento e reboco. "
+            "Protege contra umidade de solo, baldrames, muros de arrimo e caixas d'água."
+        ),
+        "category": "Pintura & Impermeabilização",
+        "brand": "Vedacit",
+        "price": Decimal("149.00"),
         "stock_quantity": 40,
-        "image_url": "https://placehold.co/300x200/ff6f00/white?text=Redmi+Note+12",
-        "product_url": "#produto-8",
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Vedacit+18L",
+        "product_url": "#produto-vedacit-18l",
     },
     {
-        "name": "iPhone 14 128GB",
+        "name": "Pintura Asfáltica Neutrol Vedacit 18 Litros",
         "description": (
-            "Flagship da Apple com chip A15 Bionic. "
-            "Câmera dupla 12MP, tela Super Retina XDR 6.1\", "
-            "iOS 16, 5G, resistência à água IP68, carregamento rápido."
+            "Tinta asfáltica impermeabilizante de alta aderência para alicerces, baldrames, "
+            "muros de contenção e estruturas enterradas de alvenaria e concreto."
         ),
-        "category": "Smartphones",
-        "brand": "Apple",
-        "price": Decimal("4499.00"),
-        "stock_quantity": 8,
-        "image_url": "https://placehold.co/300x200/37474f/white?text=iPhone+14",
-        "product_url": "#produto-9",
-    },
-    {
-        "name": "Motorola Moto G73 5G",
-        "description": (
-            "5G acessível com câmera de 50MP e tela de 120Hz. "
-            "MediaTek Dimensity 930, 8GB RAM, 256GB, bateria 5000mAh, "
-            "design premium com traseira de couro vegano."
-        ),
-        "category": "Smartphones",
-        "brand": "Motorola",
-        "price": Decimal("1349.00"),
-        "stock_quantity": 18,
-        "image_url": "https://placehold.co/300x200/00897b/white?text=Moto+G73",
-        "product_url": "#produto-10",
-    },
-    {
-        "name": "Samsung Galaxy S23 FE",
-        "description": (
-            "Fan Edition do Galaxy S23 com câmera tripla 50MP. "
-            "Snapdragon 8 Gen 1, 8GB RAM, 256GB, tela Dynamic AMOLED 6.4\" 120Hz, "
-            "bateria 4500mAh, Android 13."
-        ),
-        "category": "Smartphones",
-        "brand": "Samsung",
-        "price": Decimal("2699.00"),
-        "stock_quantity": 12,
-        "image_url": "https://placehold.co/300x200/283593/white?text=Galaxy+S23+FE",
-        "product_url": "#produto-11",
-    },
-    # ─── Móveis para Escritório ───────────────────────────────────────────
-    {
-        "name": "Cadeira Gamer ThunderX3 TC3",
-        "description": (
-            "Cadeira ergonômica com apoio lombar ajustável. "
-            "Reclinável até 180°, braços 3D, rodízios silenciosos, "
-            "espuma de alta densidade, suporta até 120kg."
-        ),
-        "category": "Móveis para Escritório",
-        "brand": "ThunderX3",
-        "price": Decimal("899.00"),
-        "stock_quantity": 7,
-        "image_url": "https://placehold.co/300x200/b71c1c/white?text=Cadeira+TC3",
-        "product_url": "#produto-12",
-    },
-    {
-        "name": "Mesa para Computador MadeiraMadeira Work",
-        "description": (
-            "Mesa compacta para home office. "
-            "Tampo em MDF 15mm, estrutura metálica, suporte para CPU, "
-            "passa-cabos, dimensões: 120x50x75cm, cor branca."
-        ),
-        "category": "Móveis para Escritório",
-        "brand": "MadeiraMadeira",
-        "price": Decimal("449.00"),
-        "stock_quantity": 14,
-        "image_url": "https://placehold.co/300x200/5d4037/white?text=Mesa+Work",
-        "product_url": "#produto-13",
-    },
-    {
-        "name": "Suporte Monitor Ergonômico Multilaser",
-        "description": (
-            "Suporte articulado para monitor de até 32\". "
-            "Braço giratório 360°, inclinação ajustável, fixação por grampo, "
-            "passa-cabo integrado, suporta até 8kg."
-        ),
-        "category": "Móveis para Escritório",
-        "brand": "Multilaser",
-        "price": Decimal("179.00"),
+        "category": "Pintura & Impermeabilização",
+        "brand": "Vedacit",
+        "price": Decimal("189.00"),
         "stock_quantity": 35,
-        "image_url": "https://placehold.co/300x200/455a64/white?text=Suporte+Monitor",
-        "product_url": "#produto-14",
+        "image_url": "https://placehold.co/300x200/111113/white?text=Neutrol+18L",
+        "product_url": "#produto-neutrol-18l",
     },
     {
-        "name": "Cadeira Escritório Presidente Anatômica",
+        "name": "Tinta Acrílica Fosca Suvinil Rende Muito Branco Neve 18L",
         "description": (
-            "Cadeira de escritório profissional com base giratória. "
-            "Encosto anatômico, assento almofadado, braços fixos, "
-            "regulagem de altura a gás, rodízios de nylon, até 110kg."
+            "Tinta super concentrada de altíssimo rendimento para paredes internas e externas. "
+            "Baixo odor, acabamento fosco suave e excelente cobertura (rende até 500m² por demão)."
         ),
-        "category": "Móveis para Escritório",
-        "brand": "Pelegrin",
-        "price": Decimal("399.00"),
-        "stock_quantity": 20,
-        "image_url": "https://placehold.co/300x200/1b5e20/white?text=Cadeira+Pres.",
-        "product_url": "#produto-15",
+        "category": "Pintura & Impermeabilização",
+        "brand": "Suvinil",
+        "price": Decimal("349.90"),
+        "stock_quantity": 28,
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Suvinil+Rende+Muito+18L",
+        "product_url": "#produto-suvinil-18l",
     },
     {
-        "name": "Luminária LED de Mesa Recarregável",
+        "name": "Tinta Coral Proteção Sol & Chuva Impermeabilizante 18L",
         "description": (
-            "Luminária de mesa com 3 modos de cor e dimmer. "
-            "Bateria interna recarregável via USB-C, pescoço flexível 360°, "
-            "ideal para leitura e home office, 5W, 400 lúmens."
+            "Tinta acrílica elástica impermeabilizante para fachadas e muros externos. "
+            "Previne e cobre microfissuras de até 0,5mm, resiste a mofo e intempéries."
         ),
-        "category": "Móveis para Escritório",
-        "brand": "Baseus",
-        "price": Decimal("129.00"),
-        "stock_quantity": 50,
-        "image_url": "https://placehold.co/300x200/f57f17/black?text=Luminaria+LED",
-        "product_url": "#produto-16",
-    },
-    # ─── Acessórios ───────────────────────────────────────────────────────
-    {
-        "name": "Carregador Turbo Samsung 25W USB-C",
-        "description": (
-            "Carregador original Samsung com tecnologia Super Fast Charging. "
-            "25W, saída USB-C, compatível com Galaxy S e A Series, "
-            "proteção contra sobretensão e superaquecimento."
-        ),
-        "category": "Acessórios",
-        "brand": "Samsung",
-        "price": Decimal("89.00"),
-        "stock_quantity": 80,
-        "image_url": "https://placehold.co/300x200/0d47a1/white?text=Carregador+25W",
-        "product_url": "#produto-17",
+        "category": "Pintura & Impermeabilização",
+        "brand": "Coral",
+        "price": Decimal("419.00"),
+        "stock_quantity": 22,
+        "image_url": "https://placehold.co/300x200/1d1d1f/white?text=Coral+Sol+Chuva+18L",
+        "product_url": "#produto-coral-sol-chuva",
     },
     {
-        "name": "Cabo USB-C para USB-C 2m Anker",
+        "name": "Massa Corrida PVA Coral 25kg",
         "description": (
-            "Cabo de alta velocidade com transferência de até 480Mbps. "
-            "Suporta carga de até 60W, revestimento em nylon trançado durável, "
-            "2 metros de comprimento, compatível com notebooks e smartphones."
+            "Massa para nivelamento e correção de superfícies internas de alvenaria e gesso. "
+            "Fácil de aplicar e lixar, proporciona acabamento liso e requintado."
         ),
-        "category": "Acessórios",
-        "brand": "Anker",
-        "price": Decimal("59.00"),
-        "stock_quantity": 100,
-        "image_url": "https://placehold.co/300x200/212121/white?text=Cabo+USB-C",
-        "product_url": "#produto-18",
-    },
-    {
-        "name": "Película Vidro Temperado Galaxy A54",
-        "description": (
-            "Proteção de tela com vidro temperado 9H para Samsung Galaxy A54. "
-            "Cobertura total, borda curva, instalação fácil com kit incluído, "
-            "pacote com 2 películas."
-        ),
-        "category": "Acessórios",
-        "brand": "Capinhas Brasil",
-        "price": Decimal("29.00"),
-        "stock_quantity": 200,
-        "image_url": "https://placehold.co/300x200/616161/white?text=Pelicula+A54",
-        "product_url": "#produto-19",
-    },
-    {
-        "name": "Hub USB-C 7 em 1 Baseus",
-        "description": (
-            "Hub multifuncional com 7 portas: HDMI 4K, USB-A 3.0 x3, "
-            "SD/MicroSD, USB-C PD 100W. Ideal para notebooks com poucas portas, "
-            "design compacto, plug-and-play."
-        ),
-        "category": "Acessórios",
-        "brand": "Baseus",
-        "price": Decimal("199.00"),
+        "category": "Pintura & Impermeabilização",
+        "brand": "Coral",
+        "price": Decimal("69.90"),
         "stock_quantity": 45,
-        "image_url": "https://placehold.co/300x200/4a148c/white?text=Hub+7em1",
-        "product_url": "#produto-20",
+        "image_url": "https://placehold.co/300x200/e8e8ed/black?text=Massa+Corrida+25kg",
+        "product_url": "#produto-massa-coral",
+    },
+
+    # ─── Hidráulica & Elétrica ───────────────────────────────────────────
+    {
+        "name": "Tubo PVC Esgoto 100mm (4 Polegadas) Barra 6 Metros Tigre",
+        "description": (
+            "Tubo reforçado para condução de esgoto sanitário e águas pluviais prediais. "
+            "Fabricado em PVC de alta durabilidade com selo Tigre de qualidade."
+        ),
+        "category": "Hidráulica & Elétrica",
+        "brand": "Tigre",
+        "price": Decimal("78.50"),
+        "stock_quantity": 55,
+        "image_url": "https://placehold.co/300x200/d2d2d7/black?text=Tubo+Esgoto+100mm+Tigre",
+        "product_url": "#produto-tubo-esgoto-100",
+    },
+    {
+        "name": "Tubo PVC Soldável Água Fria 25mm (3/4\") Barra 6 Metros Tigre",
+        "description": (
+            "Tubo marrom de alta pressão para condução de água potável em instalações prediais. "
+            "Conexão soldável rápida e segura contra vazamentos."
+        ),
+        "category": "Hidráulica & Elétrica",
+        "brand": "Tigre",
+        "price": Decimal("29.90"),
+        "stock_quantity": 110,
+        "image_url": "https://placehold.co/300x200/515154/white?text=Tubo+Agua+25mm+Tigre",
+        "product_url": "#produto-tubo-25mm",
+    },
+    {
+        "name": "Caixa d'Água Polietileno 1000 Litros com Tampa Fortlev",
+        "description": (
+            "Reservatório de água com tampa rosqueável de 1/4 de volta e travamento total. "
+            "Proteção UV, superfície interna lisa e antimicrobiana fácil de limpar."
+        ),
+        "category": "Hidráulica & Elétrica",
+        "brand": "Fortlev",
+        "price": Decimal("389.00"),
+        "stock_quantity": 15,
+        "image_url": "https://placehold.co/300x200/1d1d1f/white?text=Caixa+Dagua+1000L",
+        "product_url": "#produto-caixa-1000l",
+    },
+    {
+        "name": "Cabo Flexível 2.5mm² 750V Antichama Rolo 100 Metros Sil",
+        "description": (
+            "Fio elétrico condutor de cobre puro para tomadas residenciais de uso geral (10A). "
+            "Isolação termoplástica antichama e certificação Inmetro."
+        ),
+        "category": "Hidráulica & Elétrica",
+        "brand": "Sil",
+        "price": Decimal("219.00"),
+        "stock_quantity": 38,
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Fio+Sil+2.5mm+100m",
+        "product_url": "#produto-fio-25mm",
+    },
+    {
+        "name": "Cabo Flexível 4.0mm² 750V Antichama Rolo 100 Metros Sil",
+        "description": (
+            "Condutor ideal para chuveiros elétricos, ar-condicionado e circuitos de maior potência (20A/32A). "
+            "Cobre 100% eletrolítico e flexibilidade extra para passar em conduítes."
+        ),
+        "category": "Hidráulica & Elétrica",
+        "brand": "Sil",
+        "price": Decimal("349.00"),
+        "stock_quantity": 25,
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Fio+Sil+4.0mm+100m",
+        "product_url": "#produto-fio-4mm",
+    },
+
+    # ─── Pisos & Acabamentos ─────────────────────────────────────────────
+    {
+        "name": "Porcelanato Esmaltado Elizabeth Polido 60x60cm (Caixa 1.44m²)",
+        "description": (
+            "Revestimento nobre retificado com brilho espelhado polido para salas, quartos e corredores. "
+            "Junta mínima de 1.5mm para paginação uniforme e sofisticada."
+        ),
+        "category": "Pisos & Acabamentos",
+        "brand": "Elizabeth",
+        "price": Decimal("89.90"),
+        "stock_quantity": 85,
+        "image_url": "https://placehold.co/300x200/f5f5f7/black?text=Porcelanato+60x60+Elizabeth",
+        "product_url": "#produto-porcelanato-elizabeth",
+    },
+    {
+        "name": "Telha Cerâmica Romana Resinada Vermelha (Unidade)",
+        "description": (
+            "Telha romana tradicional com acabamento resinado que repele água e fungos. "
+            "Encaixe perfeito contra infiltrações. Consumo médio: 16 telhas por m² de telhado."
+        ),
+        "category": "Pisos & Acabamentos",
+        "brand": "Cerâmica Paulistinha",
+        "price": Decimal("3.20"),
+        "stock_quantity": 2400,
+        "image_url": "https://placehold.co/300x200/a4181e/white?text=Telha+Romana+Resinada",
+        "product_url": "#produto-telha-romana",
+    },
+
+    # ─── Ferramentas & Equipamentos ──────────────────────────────────────
+    {
+        "name": "Carrinho de Mão Caçamba Metálica 65 Litros Reforçado Tramontina",
+        "description": (
+            "Chassi de aço reforçado com pneu e câmara de alta tração. Perfeito para transporte "
+            "de terra, areia, cimento e entulho em canteiros de obra."
+        ),
+        "category": "Ferramentas",
+        "brand": "Tramontina",
+        "price": Decimal("259.00"),
+        "stock_quantity": 20,
+        "image_url": "https://placehold.co/300x200/d5232a/white?text=Carrinho+Mao+Tramontina",
+        "product_url": "#produto-carrinho-tramontina",
+    },
+    {
+        "name": "Furadeira e Parafusadeira de Impacto Bosch GSB 550W 1/2\" com Maleta",
+        "description": (
+            "Motor de 550W com função de impacto para perfurar alvenaria, concreto, metal e madeira. "
+            "Acompanha maleta plástica e kit de brocas essenciais."
+        ),
+        "category": "Ferramentas",
+        "brand": "Bosch",
+        "price": Decimal("329.00"),
+        "stock_quantity": 18,
+        "image_url": "https://placehold.co/300x200/1d1d1f/white?text=Furadeira+Bosch+550W",
+        "product_url": "#produto-furadeira-bosch",
+    },
+    {
+        "name": "Colher de Pedreiro Canto Redondo 8\" Tramontina",
+        "description": (
+            "Lâmina forjada em aço carbono especial com cabo de madeira envernizado. "
+            "Equilíbrio ideal e durabilidade extrema para aplicação de argamassa e reboco."
+        ),
+        "category": "Ferramentas",
+        "brand": "Tramontina",
+        "price": Decimal("34.90"),
+        "stock_quantity": 60,
+        "image_url": "https://placehold.co/300x200/86868b/white?text=Colher+Pedreiro+Tramontina",
+        "product_url": "#produto-colher-pedreiro",
     },
 ]
 
 
 async def seed():
-    """Popula os produtos no MongoDB."""
+    """Popula os materiais de construção no MongoDB."""
+    print("🚀 Conectando ao MongoDB Atlas...")
     client = get_motor_client()
     await init_db(client)
 
     count = await Product.count()
     if count > 0:
-        print(f"⚠️  Já existem {count} produtos no MongoDB.")
-        resposta = input("Deseja recriar os dados de exemplo? (s/N): ").strip().lower()
-        if resposta != "s":
-            print("❌ Seeding cancelado.")
-            client.close()
-            return
+        print(f"🗑️  Removendo {count} produtos antigos de teste...")
         await Product.delete_all()
-        print("🗑️  Produtos anteriores removidos.")
 
-    # Insere documentos
-    for dados in PRODUTOS:
+    print(f"📦 Inserindo {len(MATERIAIS_CONSTRUCAO)} materiais de construção reais no catálogo...")
+    for dados in MATERIAIS_CONSTRUCAO:
         p = Product(**dados)
         await p.insert()
 
-    print(f"✅ {len(PRODUTOS)} produtos cadastrados com sucesso no MongoDB!")
-    categorias = set(p["category"] for p in PRODUTOS)
+    print(f"✅ {len(MATERIAIS_CONSTRUCAO)} materiais cadastrados com sucesso!")
+    categorias = set(p["category"] for p in MATERIAIS_CONSTRUCAO)
     for cat in sorted(categorias):
-        qtd = sum(1 for p in PRODUTOS if p["category"] == cat)
+        qtd = sum(1 for p in MATERIAIS_CONSTRUCAO if p["category"] == cat)
         print(f"  • {cat}: {qtd} produto(s)")
 
     client.close()
